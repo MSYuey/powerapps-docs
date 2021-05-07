@@ -85,13 +85,13 @@ Controls inside of a responsive container have a special property, **Align in Co
 
 Controls in a responsive container have the ability to dynamically change their size without the need to write formulas. Controls inside of a responsive container have a special property **Fill portions** (also known as **Flexible Height/Width**), which affects a control's size along its *main axis*. The Alignment and Align in container properties discussed previously, affect a control's size along its *cross axis*.
 
-> [!NOTE] Recall that the direction of the main and cross axes depends on the direction of the container.
-> | Container Direction | Main Axis | Cross Axis |
-> | - | - | - |
-> | Horizontal | X (Horizontal) | Y (Vertical) |
-> | Vertical | Y (Vertical) | X (Horizontal) |
+Whenever a control's height or width is being dynamically changed by either the **FillPortions** or **Alignment** properties, the **Height** and **Width** properties themselves are not used. Instead, the Minimum Height and Minimum Width properties are shown. As the control is being dynamically sized, the Minimum Height/Width properties are used to prevent the controls from shrinking past the minimum.
 
-When a control's height or width is being dynamically changed by either the **FillPortions** or **Alignment** property,
+> [!NOTE] Recall that responsive containers have a main and cross axis, so the minimum dimension shown depends on the direction of the container.
+> | Property | Horizontal Container | Vertical Container |
+> | - | - | - |
+> | FillPortions > 0 | Width is replaced with Minimum Width | Height is replaced with Minimum Height |
+> | Alignment: Stretch | Height is replaced with Minimum Height | Width is replaced with Minimum Width |
 
 ### Flexible Height/Width (FillPortions)
 
@@ -103,6 +103,10 @@ The available space is divided among all controls in the container with a nonzer
 
 ![FillPortions example](media/responsive-container-recipes/fill-portions-example.png)
 
+Remember that the Minimum Height/Width properties prevent controls from shrinking smaller than a certain size.
+
+![FillPortions MinWidth example](media/responsive-container-recipes/fill-portions-min-example.png)
+
 > [!TIP] The total FillPortions of all controls in the container is shown in the properties pane.
 >
 > ![Total FillPortions](media/responsive-container-recipes/total-fill-portions.png)
@@ -113,6 +117,35 @@ The **Alignment** property (discussed in the [positioning section](#positioning-
 
 If the **Alignment** property is "Stretch", then the control will expand to take up the available space in the container's cross axis. Notice that when the property is stretch, *Minimum* Height/Width is shown instead of the regular Height/Width property.
 
-> [!TIP] Setting the control's **Alignment** to "Stretch" and its ***Minimum* Height/Width** to 0 will make the control always match the size of the container in the cross axis.
-
 # Recipes
+## Start and End Grouping
+![](media/responsive-container-recipes/recipe-pull-end.png)
+
+This tutorial will show you how to recreate the horizontal (blue) container in the above example, with three icons aligned left and two icons aligned right. The same steps can be applied to Vertical containers by substituting height for width and vice versa in the instructions.
+
+1. Add a **Horizontal container** and set the following properties:
+    * X: `0`
+    * Y: `0`
+    * Height: `50`
+    * Width: `Parent.Width`
+    * LayoutAlignItems ("Align (vertical)"): `LayoutAlignItems.Stretch`
+    * (*optional*) Fill: `RGBA(215, 223, 240, 1)`
+1. Add three Icon controls to the Horizontal container and set the following properties on all of them:
+    * Width: `Self.LayoutHeight`
+    * LayoutMinWidth ("Minimum width"): `0`
+    * LayoutMinHeight ("Minimum height"): `0`
+    * (*optional*) Set a desired Icon for each.
+    > [!NOTE] LayoutHeight is a read-only property corresponding to the calculated height after the control has been automatically sized by the layout container. Setting Width equal to LayoutHeight ensures that the icon is always square as the height changes dynamically.
+1. Add a Container (non-responsive) control to the Horizontal container and set the following properties:
+    * LayoutMinWidth ("Minimum width"): `0`
+    * LayoutMinHeight ("Minimum height"): `0`
+    * *Note*: FillPortions should be set to `1`, but this is the default value for containers-in-containers.
+    > [!NOTE] Before adding the remaining icons, ensure that the Horizontal container is selected, otherwise they'll be added to the regular container that was just added.
+1. Add two more Icon controls to the Horizontal container and set the following properties on all of them:
+    * Width: `Self.LayoutHeight`
+    * LayoutMinWidth ("Minimum width"): `0`
+    * (*optional*) Set a desired Icon for each.
+
+The resulting heiarchy should look like this:
+
+![](media/responsive-container-recipes/recipe-pull-end-tree-view.png)
