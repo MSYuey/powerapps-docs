@@ -118,6 +118,36 @@ The **Alignment** property (discussed in the [positioning section](#positioning-
 If the **Alignment** property is "Stretch", then the control will expand to take up the available space in the container's cross axis. Notice that when the property is stretch, *Minimum* Height/Width is shown instead of the regular Height/Width property.
 
 # Recipes
+## Collapsable grid layout
+1. Add a **Vertical container** and set the following properties:
+    * X: `0`
+    * Y: `0`
+    * Height: `Parent.Height`
+    * Width: `Parent.Width`
+1. Add a **Horizontal container** to **Container1** and set the following properties:
+    * Rename the container "Row" for convienience.
+    * LayoutAlignItems ("Align (vertical)"): `LayoutAlignItems.Stretch`
+    * LayoutWrap ("Wrap"): `true`
+    * FillPortions: `0` (equivalently, toggle "Flexible height" OFF in the properties pane).
+    * Height: `100`
+    * (*optional*) Padding: `10` (for all directions)
+    * (*optional*) Gap: `10`
+1. Add a **Horizontal container** to **Row** and set the following properties:
+    * Rename this container to "Cell" for convienience.
+    * LayoutAlignItems ("Align (vertical)"): `LayoutAlignItems.Stretch`
+    * LayoutMinHeight ("Minimum height"): `0`
+1. Add a **Text label** and **Text input** to **Cell**. The heiarchy in the Tree view should now look like this:
+
+    ![](media/responsive-container-recipes/grid-layout-heiarchy-1.png)
+
+1. Set the following properties on **Label1**:
+    * Align ("Text alignment"): `Right`
+1. Set the following properties on **TextInput1**:
+    * FillPortions: `1` (equivalently, toggle "Flexible height" ON in the properties pane)
+    * LayoutMinWidth ("Minimum width"): `150`
+1. Set the following properties on **Cell**:
+    * LayoutMinWidth ("Minimum width"): `Label1.Width + TextInput1.LayoutMinWidth`
+
 ## Start and End Grouping
 ![](media/responsive-container-recipes/recipe-pull-end.png)
 
@@ -149,3 +179,5 @@ This tutorial will show you how to recreate the horizontal (blue) container in t
 The resulting heiarchy should look like this:
 
 ![](media/responsive-container-recipes/recipe-pull-end-tree-view.png)
+
+## Scrollable content container with a "floating" button
